@@ -19,6 +19,11 @@
 
 
   <script>
+
+    var url = (window.location.hostname.includes("localhost"))
+      ? "http://localhost:3000/api/auth/google"
+      : "https://restserver-1.onrender.com/api/auth/google";
+
     function handleCredentialResponse(response) {
       const id_token = response.credential;
       console.log("ID Token: " + id_token);
@@ -33,21 +38,21 @@
 
       // Aquí puedes enviar el token al servidor si es necesario
       // Por ejemplo:
-      // fetch('/api/auth/google', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({ id_token: response.credential })
-      // })
-      // .then(response => response.json())
-      // .then(data => {
-      //   console.log('Success:', data);
-      //   // Aquí puedes guardar el token en el almacenamiento local o manejar la autenticación
-      // })
-      // .catch((error) => {
-      //   console.error('Error:', error);
-      // });
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id_token: response.credential })
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          // Aquí puedes guardar el token en el almacenamiento local o manejar la autenticación
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     }
 
     function decodeJwtResponse(token) {
