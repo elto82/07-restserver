@@ -1,6 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
+import authRoutes from "../routes/auth.mjs";
 import userRoutes from "../routes/usuarios.mjs";
 import { dbConnection } from "../database/config.mjs";
 
@@ -9,6 +10,7 @@ class Server {
     this.app = express();
     this.port = process.env.PORT;
     this.usuariosPath = "/api/usuarios";
+    this.authPath = "/api/auth";
     //conectar a base de datos
     this.conectarDB();
     //Middlewares
@@ -27,6 +29,7 @@ class Server {
   }
 
   routes() {
+    this.app.use(this.authPath, authRoutes);
     this.app.use(this.usuariosPath, userRoutes);
   }
 

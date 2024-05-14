@@ -7,12 +7,15 @@ import {
   usuariosPost,
   usuariosPut,
 } from "../controllers/usuarios.mjs";
-import { validarCampos } from "../middlewares/validarCampos.mjs";
 import {
   existEmail,
   existUserById,
   isValidRole,
 } from "../helpers/db-validators.mjs";
+
+import { validarCampos } from "../middlewares/validarCampos.mjs";
+import { validarjwt } from "../middlewares/validarjwt.mjs";
+import { haveRole, validarRoles } from "../middlewares/validarRoles.mjs";
 
 const router = Router();
 
@@ -48,6 +51,9 @@ router.post(
 router.delete(
   "/:id",
   [
+    validarjwt,
+    // validarRoles,//solo para el ADMIN
+    haveRole("ADMIN_ROLE", "VENTAS_ROLE"),
     check("id", "No es un ID valido").isMongoId(),
     check("id").custom(existUserById),
     validarCampos,
