@@ -11,20 +11,25 @@ class Server {
     this.port = process.env.PORT;
     this.usuariosPath = "/api/usuarios";
     this.authPath = "/api/auth";
-    //conectar a base de datos
+
+    // Conectar a la base de datos
     this.conectarDB();
-    //Middlewares
+
+    // Middlewares
     this.middlewares();
-    //Rutas de mi app
+
+    // Rutas de mi app
     this.routes();
   }
 
   middlewares() {
-    //cors
+    // Cors
     this.app.use(cors());
-    //Lectura y parseo del body
+
+    // Lectura y parseo del body
     this.app.use(express.json());
-    //directorio publico
+
+    // Directorio público
     this.app.use(express.static("public"));
   }
 
