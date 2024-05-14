@@ -6,7 +6,7 @@ import { generarJWT } from "../helpers/generarJWT.mjs";
 const login = async (req, res = response) => {
   const { correo, password } = req.body;
   try {
-    // Verificar si el correo existe
+    //verificar si el correo existe
     const usuario = await Usuario.findOne({ correo });
     if (!usuario) {
       return res.status(400).json({
@@ -14,14 +14,13 @@ const login = async (req, res = response) => {
       });
     }
 
-    // Verificar si el usuario está activo
+    //verificar si el usuario esta activo
     if (!usuario.estado) {
       return res.status(400).json({
-        msg: "Usuario / Password no son correctos - estado: false",
+        msg: "Usuario / Password no son correctos - estado:false",
       });
     }
-
-    // Verificar si el password es correcto
+    //verificar si el password es correcto
     const validPassword = bcrypt.compareSync(password, usuario.password);
     if (!validPassword) {
       return res.status(400).json({
@@ -29,7 +28,7 @@ const login = async (req, res = response) => {
       });
     }
 
-    // Generar el token JWT
+    //generar el token jwt
     const token = await generarJWT(usuario.id);
 
     res.json({
