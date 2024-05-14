@@ -15,6 +15,9 @@
   </div>
   <div class="g_id_signin" data-type="standard"></div>
 
+  <a href="#" onclick="signOut();">Sign out</a>
+
+
   <script>
     function handleCredentialResponse(response) {
       const responsePayload = decodeJwtResponse(response.credential);
@@ -53,6 +56,22 @@
       }).join(''));
 
       return JSON.parse(jsonPayload);
+    }
+
+    function signOut() {
+      const client_id = "903546997869-plng4ai0k0vhsbvekkhdk1ju8tcb9gu0.apps.googleusercontent.com";
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = `https://accounts.google.com/logout`;
+      document.body.appendChild(iframe);
+
+      // Remover el iframe después de un segundo
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+        console.log("User signed out.");
+      }, 1000);
+
+      // Aquí puedes realizar otras acciones de cierre de sesión como limpiar la información de usuario almacenada
     }
   </script>
 </body>
