@@ -4,41 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
+  <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp">
   <meta name="google-signin-client_id"
     content="903546997869-plng4ai0k0vhsbvekkhdk1ju8tcb9gu0.apps.googleusercontent.com">
-  <title>Restserver</title>
+  <title>restserver</title>
 </head>
 
 <body>
-  <h1>Google Sign-in</h1>
+  <h1>Google Singin</h1>
   <hr>
   <div class="g-signin2" data-onsuccess="onSignIn"></div>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script>
     function onSignIn(googleUser) {
       var profile = googleUser.getBasicProfile();
-      console.log('ID: ' + profile.getId()); // No enviar al backend. Usar un token de ID.
+      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
       console.log('Name: ' + profile.getName());
       console.log('Image URL: ' + profile.getImageUrl());
-      console.log('Email: ' + profile.getEmail()); // Esto será null si el ámbito 'email' no está presente.
-
-      // Obtener el token de ID
-      var id_token = googleUser.getAuthResponse().id_token;
-      console.log('ID Token: ' + id_token);
-
-      // Enviar el token al servidor
-      fetch('http://localhost:3000/api/auth/google', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id_token })
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
-        .catch(error => console.error('Error:', error));
+      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
     }
   </script>
 </body>
