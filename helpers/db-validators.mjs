@@ -1,5 +1,5 @@
+import { Categoria, Usuario, Producto } from "../models/index.mjs";
 import Role from "../models/rol.mjs";
-import usuario from "../models/usuario.mjs";
 
 const isValidRole = async (rol = "") => {
   const existeRol = await Role.findOne({ rol });
@@ -16,10 +16,30 @@ const existEmail = async (correo = "") => {
 };
 
 const existUserById = async (id) => {
-  const existUser = await usuario.findById(id);
+  const existUser = await Usuario.findById(id);
   if (!existUser) {
     throw new Error(`El id ${id} no existe`);
   }
 };
 
-export { isValidRole, existEmail, existUserById };
+const existeCategoria = async (id) => {
+  const existeCategoria = await Categoria.findById(id);
+  if (!existeCategoria) {
+    throw new Error(`El id ${id} no existe`);
+  }
+};
+
+const existeProducto = async (id) => {
+  const existeProducto = await Producto.findById(id);
+  if (!existeProducto) {
+    throw new Error(`El id ${id} no existe`);
+  }
+};
+
+export {
+  isValidRole,
+  existEmail,
+  existUserById,
+  existeCategoria,
+  existeProducto,
+};

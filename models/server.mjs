@@ -3,14 +3,22 @@ import "dotenv/config";
 import cors from "cors";
 import authRoutes from "../routes/auth.mjs";
 import userRoutes from "../routes/usuarios.mjs";
+import categoriaRoutes from "../routes/categorias.mjs";
+import productoRoutes from "../routes/productos.mjs";
+import buscarRouter from "../routes/buscar.mjs";
 import { dbConnection } from "../database/config.mjs";
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-    this.usuariosPath = "/api/usuarios";
-    this.authPath = "/api/auth";
+    this.paths = {
+      auth: "/api/auth",
+      usuarios: "/api/usuarios",
+      categorias: "/api/categorias",
+      productos: "/api/productos",
+      buscar: "/api/buscar",
+    };
 
     // Conectar a la base de datos
     this.conectarDB();
@@ -34,8 +42,11 @@ class Server {
   }
 
   routes() {
-    this.app.use(this.authPath, authRoutes);
-    this.app.use(this.usuariosPath, userRoutes);
+    this.app.use(this.paths.auth, authRoutes);
+    this.app.use(this.paths.usuarios, userRoutes);
+    this.app.use(this.paths.categorias, categoriaRoutes);
+    this.app.use(this.paths.productos, productoRoutes);
+    this.app.use(this.paths.buscar, buscarRouter);
   }
 
   async conectarDB() {
