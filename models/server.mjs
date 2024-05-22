@@ -6,7 +6,9 @@ import userRoutes from "../routes/usuarios.mjs";
 import categoriaRoutes from "../routes/categorias.mjs";
 import productoRoutes from "../routes/productos.mjs";
 import buscarRouter from "../routes/buscar.mjs";
+import uploadsRoutes from "../routes/uploads.mjs";
 import { dbConnection } from "../database/config.mjs";
+import fileUpload from "express-fileupload";
 
 class Server {
   constructor() {
@@ -18,6 +20,7 @@ class Server {
       categorias: "/api/categorias",
       productos: "/api/productos",
       buscar: "/api/buscar",
+      uploads: "/api/uploads",
     };
 
     // Conectar a la base de datos
@@ -39,6 +42,15 @@ class Server {
 
     // Directorio público
     this.app.use(express.static("public"));
+
+    // Fileupload - Carga de archivos
+    this.app.use(
+      fileUpload({
+        useTempFiles: true,
+        tempFileDir: "/tmp/",
+        createParentPath: true,
+      })
+    );
   }
 
   routes() {
@@ -47,6 +59,7 @@ class Server {
     this.app.use(this.paths.categorias, categoriaRoutes);
     this.app.use(this.paths.productos, productoRoutes);
     this.app.use(this.paths.buscar, buscarRouter);
+    this.app.use(this.paths.uploads, uploadsRoutes);
   }
 
   async conectarDB() {
