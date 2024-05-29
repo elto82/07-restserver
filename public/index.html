@@ -8,14 +8,29 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
-<body>
-  <h1>Google Sign-In</h1>
-  <div id="g_id_onload" data-client_id="903546997869-plng4ai0k0vhsbvekkhdk1ju8tcb9gu0.apps.googleusercontent.com"
-    data-context="signin" data-callback="handleCredentialResponse" data-auto_prompt="false">
-  </div>
-  <div class="g_id_signin" data-type="standard"></div>
+<body class="container">
+  <div class="row mt-5">
+    <div class="col-sm-6">
+      <h1>Google Sign-In</h1>
+      <hr>
 
-  <a href="#" onclick="signOut();">Sign out</a>
+      <div id="g_id_onload" data-client_id="903546997869-plng4ai0k0vhsbvekkhdk1ju8tcb9gu0.apps.googleusercontent.com"
+        data-context="signin" data-callback="handleCredentialResponse" data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard">
+      </div>
+      <br>
+      <a href="#" onclick="signOut();" class="btn btn-outline-danger">
+        <i class="bi bi-box-arrow-right"></i> Sign out
+      </a>
+
+    </div>
+
+    <div class="col-sm-6">
+
+    </div>
+  </div>
+
 
 
   <script>
