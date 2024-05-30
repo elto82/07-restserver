@@ -15,7 +15,20 @@ miFormulario.addEventListener("submit", (ev) => {
       formData[el.name] = el.value;
     }
   }
-  console.log(formData);
+  // console.log(formData);
+  fetch(url + "login", {
+    method: "POST",
+    body: JSON.stringify(formData),
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((resp) => resp.json())
+    .then(({ msg, token }) => {
+      if (msg) {
+        return console.error(msg);
+      }
+      localStorage.setItem("token", token);
+    })
+    .catch((err) => console.log(err));
 });
 
 function handleCredentialResponse(response) {
