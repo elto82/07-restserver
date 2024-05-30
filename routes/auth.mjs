@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { googleSignin, login } from "../controllers/auth.mjs";
+import { googleSignin, login, renovarToken } from "../controllers/auth.mjs";
 import { validarCampos } from "../middlewares/validarCampos.mjs";
+import { validarjwt } from "../middlewares/validarjwt.mjs";
 
 const router = Router();
 
@@ -26,5 +27,7 @@ router.post(
   ],
   googleSignin
 );
+
+router.get("/", validarjwt, renovarToken);
 
 export default router;
