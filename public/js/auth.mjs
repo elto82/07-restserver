@@ -27,6 +27,7 @@ miFormulario.addEventListener("submit", (ev) => {
         return console.error(msg);
       }
       localStorage.setItem("token", token);
+      window.location = "chat.html";
     })
     .catch((err) => console.log(err));
 });
@@ -55,6 +56,7 @@ function handleCredentialResponse(response) {
     .then((response) => response.json())
     .then(({ token }) => {
       localStorage.setItem("token", token);
+      window.location = "chat.html";
       // Aquí puedes guardar el token en el almacenamiento local o manejar la autenticación
     })
     .catch((error) => {
