@@ -1,6 +1,22 @@
-var url = window.location.hostname.includes("localhost")
-  ? "http://localhost:3000/api/auth/google"
-  : "https://restserver-1.onrender.com/api/auth/google";
+//referecias al HTML
+const miFormulario = document.querySelector("form");
+
+const url = window.location.hostname.includes("localhost")
+  ? "http://localhost:3000/api/auth/"
+  : "https://restserver-1.onrender.com/api/auth/";
+
+miFormulario.addEventListener("submit", (ev) => {
+  ev.preventDefault();
+
+  const formData = {};
+
+  for (let el of miFormulario.elements) {
+    if (el.name.length > 0) {
+      formData[el.name] = el.value;
+    }
+  }
+  console.log(formData);
+});
 
 function handleCredentialResponse(response) {
   const id_token = response.credential;
@@ -16,7 +32,7 @@ function handleCredentialResponse(response) {
 
   // Aquí puedes enviar el token al servidor si es necesario
   // Por ejemplo:
-  fetch(url, {
+  fetch(url + "google", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
