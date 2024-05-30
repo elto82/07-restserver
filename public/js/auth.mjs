@@ -7,12 +7,12 @@ function handleCredentialResponse(response) {
   console.log("ID Token: " + id_token);
   const responsePayload = decodeJwtResponse(id_token);
 
-  console.log("ID: " + responsePayload.sub);
-  console.log("Full Name: " + responsePayload.name);
-  console.log("Given Name: " + responsePayload.given_name);
-  console.log("Family Name: " + responsePayload.family_name);
-  console.log("Image URL: " + responsePayload.picture);
-  console.log("Email: " + responsePayload.email);
+  // console.log("ID: " + responsePayload.sub);
+  // console.log("Full Name: " + responsePayload.name);
+  // console.log("Given Name: " + responsePayload.given_name);
+  // console.log("Family Name: " + responsePayload.family_name);
+  // console.log("Image URL: " + responsePayload.picture);
+  // console.log("Email: " + responsePayload.email);
 
   // Aquí puedes enviar el token al servidor si es necesario
   // Por ejemplo:
@@ -25,7 +25,7 @@ function handleCredentialResponse(response) {
   })
     .then((response) => response.json())
     .then(({ token }) => {
-      console.log("Success:", token);
+      localStorage.setItem("token", token);
       // Aquí puedes guardar el token en el almacenamiento local o manejar la autenticación
     })
     .catch((error) => {
@@ -44,7 +44,7 @@ function decodeJwtResponse(token) {
       })
       .join("")
   );
-  console.log(token);
+  // console.log(token);
   return JSON.parse(jsonPayload);
 }
 
