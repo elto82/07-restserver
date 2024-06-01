@@ -28,6 +28,34 @@ const dibujarUsuarios = (usuarios = []) => {
   ulUsuarios.innerHTML = usersHtml;
 };
 
+const dibujarMensajes = (mensajes = []) => {
+  let mensajesHtml = "";
+  mensajes.forEach(({ nombre, mensaje }) => {
+    mensajesHtml += `
+      <li>
+        <p>
+          <span class="text-primary">${nombre}:</span>
+          <span>${mensaje}</span>
+        </p>
+      </li>
+    `;
+  });
+
+  ulMensajes.innerHTML = mensajesHtml;
+};
+
+const dibujarMensajePrivado = (mensaje) => {
+  const { de, mensaje: mensajePrivado } = mensaje;
+  ulMensajes.innerHTML += `
+    <li>
+      <p>
+        <span class="text-danger">${de} (privado):</span>
+        <span>${mensajePrivado}</span>
+      </p>
+    </li>
+  `;
+};
+
 // Validar el token del localStorage
 const validarJWT = async () => {
   const token = localStorage.getItem("token");
@@ -64,8 +92,7 @@ const conectarSocket = async () => {
   });
 
   socket.on("recibir-mensajes", (mensajes) => {
-    // Aquí puedes manejar los mensajes recibidos
-    console.log("Mensajes recibidos:", mensajes);
+    dibujarMensajes(mensajes);
   });
 
   socket.on("usuarios-activos", (usuarios) => {
@@ -73,9 +100,26 @@ const conectarSocket = async () => {
   });
 
   socket.on("mensaje-privado", (mensaje) => {
-    console.log("Mensaje privado:", mensaje);
+    dibujarMensajePrivado(mensaje);
   });
 };
+
+txtMensaje.addEventListener("keyup", ({ keyCode }) => {
+  const mensaje = txtMensaje.value;
+  const uid = txtUid.value;
+
+  if (keyCode !== 13) return;
+
+  if (mensaje.length === 0) return;
+
+  socket.emit("enviar-mensaje", { mensaje, uid });
+  txtMensaje.value = "";
+});
+
+btnSalir.addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location = "index.html";
+});
 
 const main = async () => {
   await validarJWT();
