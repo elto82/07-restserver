@@ -5,16 +5,32 @@ const url = window.location.hostname.includes("localhost")
 let usuario = null;
 let socket = null;
 
-//referencias HTML
+// Referencias HTML
 const txtUid = document.querySelector("#txtUid");
 const txtMensaje = document.querySelector("#txtMensaje");
 const ulUsuarios = document.querySelector("#ulUsuarios");
 const ulMensajes = document.querySelector("#ulMensajes");
 const btnSalir = document.querySelector("#btnSalir");
 
-//validar el token del localStorage
+const dibujarUsuarios = (usuarios = []) => {
+  let usersHtml = "";
+  usuarios.forEach(({ nombre, uid }) => {
+    usersHtml += `
+      <li>
+        <p>
+          <h5 class="text-success">${nombre}</h5>
+          <span class="fs-6 text-muted">${uid}</span>
+        </p>
+      </li>
+    `;
+  });
+
+  ulUsuarios.innerHTML = usersHtml;
+};
+
+// Validar el token del localStorage
 const validarJWT = async () => {
-  const token = localStorage.getItem("token" || "");
+  const token = localStorage.getItem("token");
   if (!token) {
     window.location = "index.html";
     throw new Error("No hay token en el servidor");
@@ -46,20 +62,23 @@ const conectarSocket = async () => {
   socket.on("disconnect", () => {
     console.log("Socket offline");
   });
+
+  socket.on("recibir-mensajes", (mensajes) => {
+    // Aquí puedes manejar los mensajes recibidos
+    console.log("Mensajes recibidos:", mensajes);
+  });
+
+  socket.on("usuarios-activos", (usuarios) => {
+    dibujarUsuarios(usuarios);
+  });
+
+  socket.on("mensaje-privado", (mensaje) => {
+    console.log("Mensaje privado:", mensaje);
+  });
 };
-
-// socket.on("recibir-mensajes", () => {});
-
-socket.on("usuarios-activos", (paiload) => {
-  console.log(paiload);
-});
-
-socket.on("mensaje-privado", () => {});
 
 const main = async () => {
   await validarJWT();
 };
 
 main();
-
-// const socket = io();
